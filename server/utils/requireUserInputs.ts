@@ -1,4 +1,4 @@
-import { UserInputError } from "apollo-server-lambda";
+import { UserInputError } from "apollo-server-express";
 type Arguments = Array<{ [key: string]: any }>;
 const requireUserInputs = (userInputs: Arguments) => {
   // Get all the undefined arguments

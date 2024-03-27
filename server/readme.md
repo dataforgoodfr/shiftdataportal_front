@@ -1,4 +1,4 @@
-# The Node JS Serverless GraphQL API of the data portal.
+# The Node JS Express GraphQL API of the data portal.
 
 For installation prerequisites please check the readme of the main repo.
 Almost everything is written in TypeScript.
@@ -14,13 +14,13 @@ Warning: Each time you modify the schema (schema.ts) you'll have to run `yarn ge
 
 **Runtime :** Node JS
 
-**Database :** PosgreSQL hosted in AWS RDS.
+**Database :** PosgreSQL.
 
 **Query Builder (not an ORM) :** Knex JS because it is the most maintainable library because it is readable and doesn't have too many layers of abstraction. Also we never modify the DB nor we do left joins so we needed only a light layer between the DB and the server.
 
-**GraphQL framework :** Apollo Server set in serverless mode.
+**GraphQL framework :** Apollo Server.
 
-**Hosting :** AWS Lambda for the server and AWS RDS for the database.
+**Hosting :** Scalingo.
 
 # GraphQL code generator and PosgreSQL schema
 
@@ -30,6 +30,3 @@ Warning: Each time you modify the schema (schema.ts) you'll have to run `yarn ge
 **pg-structure** is used to get the names of all the PosgreSQL database and every column so we are sure we are not misspelling a table name or a column of this table. We also know for sure this column exists so that we don't have to look every now and then what are the columns. We created a custom function to fit our needs.
 
 **Warning:** you'll have to run each command every time you change the schema or the database structure.
-
-TODO:
-serverless config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY

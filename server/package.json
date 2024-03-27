@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This is the server",
   "main": "server.js",
+  "engines": {
+    "node": ">=20.11.0"
+  },
   "scripts": {
     "start": "node ./dist/server.js",
     "tsc": "tsc",
@@ -10,8 +13,6 @@
     "debug": "NODE_ENV=development ts-node-dev --inspect --respawn ./server.ts",
     "generate:types": "cd ../ && yarn generate",
     "build": "yarn tsc",
-    "create_domain": "NODE_ENV=production serverless create_domain",
-    "deploy:prod": "NODE_ENV=production yarn generate:db_types && yarn tsc && SLS_DEBUG=* NODE_ENV=production serverless deploy",
     "test": "jest --config=./jest.config.js --coverage",
     "generate:db_types": "ts-node-dev ./utils/schempaGenerator.ts"
   },
@@ -19,19 +20,16 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.10.1",
-    "apollo-server-lambda": "^2.10.1",
     "apollo-server-plugin-response-cache": "^0.3.11",
-    "aws-lambda": "^1.0.5",
     "body-parser": "^1.19.0",
     "datasource-sql": "^1.1.1",
     "express": "^4.17.1",
     "graphql": "^14.6.0",
-    "knex": "^0.20.10",
-    "pg": "^7.18.2",
+    "knex": "^0.21.1",
+    "pg": "^8.0.3",
     "slugify": "^1.4.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.45",
     "@types/graphql": "^14.5.0",
     "@types/jest": "^25.1.3",
     "dotenv-flow": "^3.1.0",
@@ -40,10 +38,6 @@
     "jest-junit": "^10.0.0",
     "pg-structure": "^5.10.7",
     "prettier": "^1.19.1",
-    "serverless-api-compression": "^1.0.1",
-    "serverless-domain-manager": "^3.3.1",
-    "serverless-dotenv-plugin": "^2.3.2",
-    "serverless-offline": "^5.12.1",
     "ts-jest": "^25.2.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.8.3"

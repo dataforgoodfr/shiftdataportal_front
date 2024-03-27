@@ -29,7 +29,6 @@ const Logo = styled.a`
 const Copyright = styled.div`
   text-align: center;
   letter-spacing: 0.59px;
-  line-height: 34px;
   text-align: center;
   font-family: ${(p) => p.theme.fonts.secondary};
   ${color}
@@ -100,8 +99,11 @@ export default function Footer({ mt = 5 }) {
           </Ul>
         </Layout>
       </Container>
-      <Copyright fontSize={3} color="darkBlue" my={1}>
+      <Copyright fontSize={3} color="darkBlue" marginTop={2} marginBottom={2}>
         © 2023 The Shift Project. All rights reserved.
+      </Copyright>
+      <Copyright fontSize={3} color="darkBlue" marginBottom={2}>
+        Graciously hosted by <Link href="https://scalingo.com">Scalingo</Link> in 🇫🇷
       </Copyright>
     </FooterEl>
   )

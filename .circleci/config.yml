@@ -1,43 +1,98 @@
-version: 2 # use CircleCI 2.0
-jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
-    working_directory: ~/tsp-data-portal-v2/server # directory where steps will run
-    docker: # run the steps with Docker
-      - image: circleci/node:11.5.0 # ...with this image as the primary container; this is where all `steps` will run
-    steps: # a collection of executable commands
+version: 2.1
+
+workflows:
+  api:
+    jobs:
+      - test-api
+
+      - deploy-api:
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - test-api
+
+  front:
+    jobs:
+      - test-front
+
+      - deploy-front:
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - test-front
+
+jobs:
+  test-api:
+    working_directory: ~/shiftdataportal/server
+    docker:
+      - image: cimg/node:20.11
+    steps:
       - checkout:
-          path: ~/tsp-data-portal-v2 # special step to check out source code to working directory
-      - restore_cache: # special step to restore the dependency cache
-          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          path: ~/shiftdataportal
+      - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: install-yarn
-          command: yarn
-      - save_cache: # special step to save the dependency cache
+          command: yarn --frozen-lockfile
+      - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: LS
-          command: pwd
       - run:
           name: Run Test
           command: yarn test
       - run:
           name: Run typescript which is the same as running a build
+          command: yarn tsc
+
+  deploy-api:
+    resource_class: small
+    docker:
+      - image: cimg/base:2023.10
+    steps:
+      - checkout:
+          path: ~/shiftdataportal
+      - run:
+          name: Add Scalingo to known_hosts
+          command: mkdir -p ~/.ssh && ssh-keyscan -H ssh.osc-fr1.scalingo.com >> ~/.ssh/known_hosts
+      - run:
+          name: Deploy on Scalingo
+          command: git push git@ssh.osc-fr1.scalingo.com:data-portal-back.git main
+
+  test-front:
+    working_directory: ~/shiftdataportal/client
+    docker:
+      - image: cimg/node:20.11
+    steps:
+      - checkout:
+          path: ~/shiftdataportal
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-yarn
+          command: yarn --frozen-lockfile
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Run typescript which is the same as running a build
           command: yarn build
-      - store_artifacts:
-          path: coverage
-      #     environment:
-      #       JEST_JUNIT_OUTPUT: js-test-results.xml
-      # - store_artifacts: # special step to save test results as as artifact
-      #     # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-      #     path: js-test-results.xml
-      #     prefix: tests
-      # - store_artifacts: # special step to save test results as as artifact
-      #     # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-      #     path: coverage
-      #     prefix: coverage
-      # - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-      #     path: js-test-results.xml
-      #     # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+
+  deploy-front:
+    resource_class: small
+    docker:
+      - image: cimg/base:2023.10
+    steps:
+      - checkout:
+          path: ~/shiftdataportal
+      - run:
+          name: Add Scalingo to known_hosts
+          command: mkdir -p ~/.ssh && ssh-keyscan -H ssh.osc-fr1.scalingo.com >> ~/.ssh/known_hosts
+      - run:
+          name: Deploy on Scalingo
+          command: git push git@ssh.osc-fr1.scalingo.com:data-portal-front.git main

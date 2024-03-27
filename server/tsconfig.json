@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
-    "downlevelIteration": true
-  }
+    "outDir": "dist",
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+  },
 }

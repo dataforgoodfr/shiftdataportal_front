@@ -1,7 +1,7 @@
 // This file is very very important, this is the heart of all the data types in both the client and the server.
 // Each time you modify this file you'll have to re-generate the types with the appropriate command listed in the package.json file (normally it's "yarn generate").
 // NB: You'll have to open a new terminal window to generate the types.
-const { gql } = require("apollo-server-lambda");
+const { gql } = require("apollo-server-express");
 export default gql`
   scalar JSON
   """
