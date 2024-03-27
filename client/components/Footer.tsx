@@ -103,7 +103,7 @@ export default function Footer({ mt = 5 }) {
         © 2023 The Shift Project. All rights reserved.
       </Copyright>
       <Copyright fontSize={3} color="darkBlue" marginBottom={2}>
-        Graciously hosted by <Link href="https://scalingo.com">Scalingo</Link> in 🇫🇷
+        Graciously hosted by <Link href="https://scalingo.com?utm_source=referral&utm_medium=website-footer&utm_campaign=shiftproject">Scalingo</Link> in 🇫🇷
       </Copyright>
     </FooterEl>
   )
